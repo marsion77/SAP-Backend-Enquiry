@@ -10,6 +10,10 @@ const transporter = nodemailer.createTransport({
   socketTimeout: 5000
 });
 
+transporter.verify()
+  .then(() => console.log("Email transporter verified"))
+  .catch((err) => console.error("Email transporter verify error:", err.message));
+
 export const sendEnquiryMail = async (data) => {
   try {
     const mailOptions = {

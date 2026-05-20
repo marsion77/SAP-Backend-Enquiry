@@ -19,15 +19,17 @@ export const submitEnquiry = async (req, res) => {
     });
 
     // 2. Send Email (non-blocking safe pattern)
+    let emailStatus = "sent";
     try {
       await sendEnquiryMail({ name, email, phone, subject, message });
     } catch (mailErr) {
-      console.log("Email failed:", mailErr.message);
+      emailStatus = "failed";
+      console.error("Email failed:", mailErr);
     }
 
     return res.status(201).json({
       success: true,
-      message: "Enquiry saved & email sent",
+      message: `Enquiry saved; email ${emailStatus}`,
       data: result
     });
 
